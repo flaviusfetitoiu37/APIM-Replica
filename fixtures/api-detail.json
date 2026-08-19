@@ -1,0 +1,13 @@
+{
+  "id": 16,
+  "name": "OrdersApi",
+  "type": "rest",
+  "baseUrl": "http://127.0.0.1:8099",
+  "schemaUrl": "http://127.0.0.1:8099/schema.json",
+  "healthCheckUrl": "http://127.0.0.1:8099/schema.json",
+  "schema": "{\"info\": {\"title\": \"Orders API\", \"version\": \"2.0.0\"}, \"paths\": {\"/orders\": {\"get\": {\"summary\": \"List orders\"}, \"post\": {\"summary\": \"Create order\"}}, \"/customers\": {\"get\": {\"summary\": \"List customers\"}}, \"/orders/{id}\": {\"get\": {\"summary\": \"Get order\"}, \"patch\": {\"summary\": \"Update order\"}, \"parameters\": [{\"in\": \"path\", \"name\": \"id\", \"required\": true}]}, \"/customers/{id}\": {\"get\": {\"summary\": \"Get customer\"}}}, \"openapi\": \"3.0.3\"}",
+  "healthStatus": "healthy",
+  "lastLatencyMs": 3,
+  "lastCheckedAt": "2026-08-17T22:19:50.775268Z",
+  "createdAt": "2026-08-17T22:19:22.12182Z"
+}

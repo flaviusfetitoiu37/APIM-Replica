@@ -1,0 +1,10 @@
+{
+  "id": 16,
+  "name": "OrdersApi",
+  "type": "rest",
+  "baseUrl": "http://127.0.0.1:8099",
+  "schemaUrl": "http://127.0.0.1:8099/schema.json",
+  "healthCheckUrl": "http://127.0.0.1:8099/schema.json",
+  "healthStatus": "unknown",
+  "createdAt": "2026-08-17T22:19:22.12182Z"
+}

@@ -1,0 +1,1 @@
+Schema is not valid JSON. Only JSON OpenAPI documents are supported, not YAML.

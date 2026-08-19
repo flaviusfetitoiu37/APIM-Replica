@@ -1,0 +1,12 @@
+{
+  "from": 1,
+  "to": 2,
+  "added": [
+    "PATCH /orders/{id}",
+    "GET /customers/{id}"
+  ],
+  "removed": [
+    "DELETE /orders/{id}"
+  ],
+  "unchanged": 4
+}

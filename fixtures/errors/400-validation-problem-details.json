@@ -1,0 +1,11 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "from": [
+      "The value 'abc' is not valid."
+    ]
+  },
+  "traceId": "00-450755b1f27325fe5dcc246fac4c509b-9138ef20f5007d00-00"
+}

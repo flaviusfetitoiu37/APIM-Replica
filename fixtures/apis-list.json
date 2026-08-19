@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Petstore",
+    "type": "rest",
+    "baseUrl": "https://petstore3.swagger.io/api/v3",
+    "healthStatus": "down",
+    "lastLatencyMs": null,
+    "lastCheckedAt": "2026-08-17T22:19:50.769783Z",
+    "createdAt": "2026-08-16T13:30:59.791347Z"
+  },
+  {
+    "id": 16,
+    "name": "OrdersApi",
+    "type": "rest",
+    "baseUrl": "http://127.0.0.1:8099",
+    "healthStatus": "healthy",
+    "lastLatencyMs": 3,
+    "lastCheckedAt": "2026-08-17T22:19:50.775268Z",
+    "createdAt": "2026-08-17T22:19:22.12182Z"
+  },
+  {
+    "id": 17,
+    "name": "SwaggerPetstore",
+    "type": "rest",
+    "baseUrl": "https://petstore3.swagger.io/api/v3",
+    "healthStatus": "healthy",
+    "lastLatencyMs": 128,
+    "lastCheckedAt": "2026-08-17T22:19:50.904825Z",
+    "createdAt": "2026-08-17T22:19:22.835044Z"
+  },
+  {
+    "id": 18,
+    "name": "BrokenApi",
+    "type": "rest",
+    "baseUrl": "https://petstore3.swagger.io/api/v3",
+    "healthStatus": "unhealthy",
+    "lastLatencyMs": 126,
+    "lastCheckedAt": "2026-08-17T22:19:51.035087Z",
+    "createdAt": "2026-08-17T22:19:23.013218Z"
+  }
+]

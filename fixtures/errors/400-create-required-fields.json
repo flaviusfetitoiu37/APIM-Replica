@@ -1,0 +1,18 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Name": [
+      "The Name field is required.",
+      "The field Name must be a string with a minimum length of 1 and a maximum length of 64."
+    ],
+    "BaseUrl": [
+      "The BaseUrl field is required."
+    ],
+    "SchemaUrl": [
+      "The SchemaUrl field is required."
+    ]
+  },
+  "traceId": "00-ac230ab619bd2fca759442a43d1cb407-b8fdacffa3a99abb-00"
+}

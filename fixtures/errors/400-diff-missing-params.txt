@@ -1,0 +1,1 @@
+Query parameters 'from' and 'to' are required.

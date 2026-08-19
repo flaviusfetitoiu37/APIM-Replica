@@ -1,0 +1,222 @@
+@host = http://localhost:5230
+@apiId = 1
+
+### ------------------------------------------------------------------
+### CALEA FERICITĂ
+### ------------------------------------------------------------------
+
+### 0. Gateway-ul rulează?
+GET {{host}}/health
+
+### 1. Înregistrează Petstore
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "Petstore",
+  "baseUrl": "https://petstore3.swagger.io/api/v3",
+  "schemaUrl": "https://petstore3.swagger.io/api/v3/openapi.json",
+  "healthCheckUrl": "https://petstore3.swagger.io/api/v3/openapi.json"
+}
+
+### 2. Listează API-urile (fără câmpul schema)
+GET {{host}}/apis
+
+### 3. Detalii complete (cu schema)
+GET {{host}}/apis/{{apiId}}
+
+### 4. Refresh schema — "No changes." dacă hash-ul e identic
+POST {{host}}/apis/{{apiId}}/refresh
+
+### 5. Istoricul versiunilor
+GET {{host}}/apis/{{apiId}}/versions
+
+### 6. Diff între două versiuni
+GET {{host}}/apis/{{apiId}}/diff?from=1&to=2
+
+### 7. Test proxy
+GET {{host}}/proxy/petstore/pet/1
+
+### 8. Proxy — numele e case-insensitive
+GET {{host}}/proxy/PETSTORE/pet/1
+
+### 9. AI — întrebare cu răspuns în schemă
+POST {{host}}/apis/{{apiId}}/ask
+Content-Type: application/json
+
+{
+  "question": "How do I find a pet by its ID?"
+}
+
+### 10. AI — întrebare fără răspuns în schemă
+POST {{host}}/apis/{{apiId}}/ask
+Content-Type: application/json
+
+{
+  "question": "How do I update a user's credit card details?"
+}
+
+### 11. Șterge (204; versiunile și ruta proxy dispar odată cu el)
+### ATENȚIE: șterge API-ul cu id-ul din @apiId, adică cel pe care ai făcut
+### toate testele de mai sus. Schimbă @apiId înainte dacă nu asta vrei.
+DELETE {{host}}/apis/{{apiId}}
+
+
+### ------------------------------------------------------------------
+### CAZURI DE EROARE — înregistrare
+### ------------------------------------------------------------------
+
+### 400 — câmpuri obligatorii lipsă (ProblemDetails cu errors)
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{}
+
+### 400 — name cu spațiu (doar litere, cifre, - și _)
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "nume cu spatii",
+  "baseUrl": "https://petstore3.swagger.io/api/v3",
+  "schemaUrl": "https://petstore3.swagger.io/api/v3/openapi.json"
+}
+
+### 400 — baseUrl nu e URL absolut
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "BadBase",
+  "baseUrl": "nu-e-url",
+  "schemaUrl": "https://petstore3.swagger.io/api/v3/openapi.json"
+}
+
+### 400 — schemaUrl întoarce HTML, nu JSON
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "HtmlSchema",
+  "baseUrl": "https://example.com",
+  "schemaUrl": "https://example.com"
+}
+
+### 409 — nume duplicat (comparație case-insensitive)
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "PETSTORE",
+  "baseUrl": "https://petstore3.swagger.io/api/v3",
+  "schemaUrl": "https://petstore3.swagger.io/api/v3/openapi.json"
+}
+
+### 502 — schemaUrl inaccesibil (host inexistent)
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "Unreachable",
+  "baseUrl": "https://petstore3.swagger.io/api/v3",
+  "schemaUrl": "https://nu-exista-98765.invalid/openapi.json"
+}
+
+### 502 — schemaUrl răspunde cu 404
+POST {{host}}/apis/rest
+Content-Type: application/json
+
+{
+  "name": "NotFoundSchema",
+  "baseUrl": "https://petstore3.swagger.io/api/v3",
+  "schemaUrl": "https://petstore3.swagger.io/api/v3/nu-exista.json"
+}
+
+
+### ------------------------------------------------------------------
+### CAZURI DE EROARE — citire
+### ------------------------------------------------------------------
+
+### 404 — id inexistent (ProblemDetails, fără mesaj)
+GET {{host}}/apis/999
+
+### 400 — id nenumeric
+GET {{host}}/apis/abc
+
+### 404 — versiuni pentru un id inexistent (text simplu, NU array gol)
+GET {{host}}/apis/999/versions
+
+### 400 — diff fără parametri
+GET {{host}}/apis/{{apiId}}/diff
+
+### 400 — diff cu parametru nenumeric (ProblemDetails cu errors)
+GET {{host}}/apis/{{apiId}}/diff?from=abc&to=2
+
+### 404 — diff pe un API inexistent
+GET {{host}}/apis/999/diff?from=1&to=2
+
+### 404 — diff cu versiune inexistentă
+GET {{host}}/apis/{{apiId}}/diff?from=1&to=99
+
+### 404 — refresh pe id inexistent
+POST {{host}}/apis/999/refresh
+
+### 404 — delete pe id inexistent
+DELETE {{host}}/apis/999
+
+
+### ------------------------------------------------------------------
+### CAZURI DE EROARE — AI
+### ------------------------------------------------------------------
+
+### 400 — question lipsă
+POST {{host}}/apis/{{apiId}}/ask
+Content-Type: application/json
+
+{}
+
+### 404 — API inexistent
+POST {{host}}/apis/999/ask
+Content-Type: application/json
+
+{
+  "question": "How do I find a pet by its ID?"
+}
+
+### 503 — Ollama oprit (oprește 'ollama serve' ca să vezi cazul)
+POST {{host}}/apis/{{apiId}}/ask
+Content-Type: application/json
+
+{
+  "question": "How do I find a pet by its ID?"
+}
+
+
+### ------------------------------------------------------------------
+### PROXY
+### ------------------------------------------------------------------
+
+### 404 — nume care nu corespunde niciunui API
+GET {{host}}/proxy/nu-exista/pet/1
+
+### 429 — rate limit: rulează astea 7 în mai puțin de 10 secunde.
+### Ultimele două întorc 429, fără corp și fără Retry-After.
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1
+
+###
+GET {{host}}/proxy/petstore/pet/1

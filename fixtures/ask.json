@@ -1,0 +1,4 @@
+{
+  "question": "How do I update an existing order?",
+  "answer": "To update an existing order, you would use the PATCH endpoint with the order ID as a path parameter. The request should be made to:\n\nPATCH /orders/{id}\n\nYou would need to provide the updated order information in the request body."
+}
